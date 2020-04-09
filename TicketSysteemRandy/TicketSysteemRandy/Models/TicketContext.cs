@@ -37,6 +37,5 @@ namespace TicketSysteem.Models
 
         public DbSet<Status> Statussen { get; set; }
 
-        public DbSet<TicketSysteem.Models.Gebruiker> Gebruiker { get; set; }
     }
 }
