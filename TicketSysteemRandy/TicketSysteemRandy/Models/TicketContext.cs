@@ -27,6 +27,7 @@ namespace TicketSysteem.Models
                 );
         }
 
+
         public DbSet<Medewerker> Medewerkers { get; set; }
 
         public DbSet<Klant> Klanten { get; set; }
