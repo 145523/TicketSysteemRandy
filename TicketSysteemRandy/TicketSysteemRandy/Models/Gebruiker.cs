@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TicketSysteem.Models
 {
@@ -36,6 +37,9 @@ namespace TicketSysteem.Models
         /// </summary>
         [Required]
         public string Achternaam { get; set; }
+        
+        [NotMapped]
+        public string VolledigeNaam => $"{Voornaam} {Tussenvoegsels} {Achternaam}";
 
         /// <summary>
         /// Het telefoonnummer van de gebruiker

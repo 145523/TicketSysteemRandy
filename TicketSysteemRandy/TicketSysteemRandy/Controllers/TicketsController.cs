@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TicketSysteem.Models;
+using TicketSysteem.ViewModels;
 
 namespace TicketSysteem.Controllers
 {
@@ -64,8 +65,6 @@ namespace TicketSysteem.Controllers
             Status status = _context.Statussen.OrderBy(s => s.Volgorde).FirstOrDefault();
             ticket.StatusId = status.Id;
 
-            ticket.Datum = DateTime.Today;
-
             if (ModelState.IsValid)
             {
                 _context.Add(ticket);
@@ -80,18 +79,33 @@ namespace TicketSysteem.Controllers
         // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = await _context.Tickets
+                .Include(t => t.Klant)
+                .Include(t => t.Applicatie)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (ticket == null)
             {
                 return NotFound();
             }
-            ViewData["ApplicatieId"] = new SelectList(_context.Applicaties, "Id", "Naam", ticket.ApplicatieId);
-            ViewData["KlantId"] = new SelectList(_context.Klanten, "Id", "Achternaam", ticket.KlantId);
+
+            var ticketViewModel = new TicketViewModel()
+            {
+                Id = ticket.Id,
+                Omschrijving = ticket.Omschrijving,
+                StatusId = ticket.StatusId
+            };
+            ViewBag.Klant = ticket.Klant.VolledigeNaam;
+            ViewBag.Applicatie = ticket.Applicatie.Naam;
+            ViewBag.Datum = ticket.Datum.ToShortDateString();
+            ViewBag.Onderwerp = ticket.Onderwerp;
             ViewData["StatusId"] = new SelectList(_context.Statussen, "Id", "Naam", ticket.StatusId);
             return View(ticket);
         }
@@ -101,17 +115,25 @@ namespace TicketSysteem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,KlantId,ApplicatieId,Onderwerp,Omschrijving,Datum,StatusId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, TicketViewModel ticketViewModel)
         {
-            if (id != ticket.Id)
+            if (id != ticketViewModel.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var ticket = await _context.Tickets.FirstOrDefaultAsync(t => t.Id == id);
+
+            Status status = _context.Statussen.OrderBy(s => s.Volgorde).FirstOrDefault();
+
+            bool modelStatus = !string.IsNullOrEmpty(ticketViewModel.Omschrijving) && ticketViewModel.StatusId != status.Id;
+
+            if (ModelState.IsValid && modelStatus)
             {
                 try
                 {
+                    ticket.Omschrijving = ticketViewModel.Omschrijving;
+                    ticket.StatusId = ticketViewModel.StatusId;
                     _context.Update(ticket);
                     await _context.SaveChangesAsync();
                 }
@@ -128,10 +150,12 @@ namespace TicketSysteem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicatieId"] = new SelectList(_context.Applicaties, "Id", "Naam", ticket.ApplicatieId);
-            ViewData["KlantId"] = new SelectList(_context.Klanten, "Id", "Achternaam", ticket.KlantId);
+            ViewBag.Klant = ticket.Klant.VolledigeNaam;
+            ViewBag.Applicatie = ticket.Applicatie.Naam;
+            ViewBag.Datum = ticket.Datum.ToShortDateString();
+            ViewBag.Onderwerp = ticket.Onderwerp;
             ViewData["StatusId"] = new SelectList(_context.Statussen, "Id", "Naam", ticket.StatusId);
-            return View(ticket);
+            return View(ticketViewModel);
         }
 
         // GET: Tickets/Delete/5
