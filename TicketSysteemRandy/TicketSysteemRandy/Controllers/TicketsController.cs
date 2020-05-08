@@ -127,6 +127,11 @@ namespace TicketSysteem.Controllers
             Status status = _context.Statussen.OrderBy(s => s.Volgorde).FirstOrDefault();
 
             bool modelStatus = !string.IsNullOrEmpty(ticketViewModel.Omschrijving) && ticketViewModel.StatusId != status.Id;
+           
+            if (modelStatus == false)
+            {
+                return Redirect("~/Tickets/Edit/" + id);
+            }
 
             if (ModelState.IsValid && modelStatus)
             {
