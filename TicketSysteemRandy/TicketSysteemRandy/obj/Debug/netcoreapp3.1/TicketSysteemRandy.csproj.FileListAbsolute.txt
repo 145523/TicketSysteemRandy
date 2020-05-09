@@ -184,3 +184,4 @@ C:\Users\Randy\Documents\GitHub\TicketSysteemRandy\TicketSysteemRandy\TicketSyst
 C:\Users\Randy\Documents\GitHub\TicketSysteemRandy\TicketSysteemRandy\TicketSysteemRandy\obj\Debug\netcoreapp3.1\TicketSysteemRandy.dll
 C:\Users\Randy\Documents\GitHub\TicketSysteemRandy\TicketSysteemRandy\TicketSysteemRandy\obj\Debug\netcoreapp3.1\TicketSysteemRandy.pdb
 C:\Users\Randy\Documents\GitHub\TicketSysteemRandy\TicketSysteemRandy\TicketSysteemRandy\obj\Debug\netcoreapp3.1\TicketSysteemRandy.genruntimeconfig.cache
+C:\Users\Randy\Documents\GitHub\TicketSysteemRandy\TicketSysteemRandy\TicketSysteemRandy\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Components\Ticket\Default.cshtml.g.cs
