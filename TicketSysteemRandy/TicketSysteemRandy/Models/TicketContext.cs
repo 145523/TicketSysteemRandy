@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketSysteem.Models;
+using TicketSysteemRandy.Models;
 
 namespace TicketSysteem.Models
 {
@@ -37,6 +38,9 @@ namespace TicketSysteem.Models
         public DbSet<Ticket> Tickets { get; set; }
 
         public DbSet<Status> Statussen { get; set; }
+
+        public DbSet<Omschrijving> Omschrijvingen { get; set; }
+
 
     }
 }
