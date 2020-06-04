@@ -39,7 +39,7 @@ namespace TicketSysteem.Models
 
         public DbSet<Status> Statussen { get; set; }
 
-        public DbSet<Omschrijving> Omschrijvingen { get; set; }
+        public DbSet<Aantekening> Aantekeningen { get; set; }
 
 
     }

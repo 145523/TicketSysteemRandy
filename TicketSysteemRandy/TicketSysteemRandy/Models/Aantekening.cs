@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TicketSysteemRandy.Models
 {
-    public class Omschrijving
+    public class Aantekening
     {
         [Key]
         public int Id { get; set; }
